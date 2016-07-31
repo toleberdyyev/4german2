@@ -1,0 +1,50 @@
+{% for comment in comments %}
+<div class="comments_row">
+  <div class="comment_teach" style="">
+    <table style="vertical-align:top;" >
+      <tr>
+        <td style="vertical-align:top">
+          <a href="/{{ post.author.pk}}"><div class='ava' style="width:50px !important;height:50px !important;background-image: url(/media/{{ post.author.avatar }}" title="{{post.author}}'s avatar" ></div></a>
+        </td>
+        <td style="vertical-align:top;padding-left:15px;" >
+          <table>
+            <tr>
+              <p><a href="/{{ post.author.pk}}" style="color:gray;"  class="rep{{comment.id}}"id='{{comment.author}}'>{{comment.author}}</a></p>
+
+            </tr>
+            <tr>
+              <p>
+               {{ comment.text}}
+              </p>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+<div class="panel_post" style="background-color:white;">
+  <div class="date" style="float:right">
+    <a style="display:inline-block">{{ comment.created_date| timesince}} ago</a>
+  </div>
+  <div class="settings" style="float:left">
+    <il class="dropdown" style="float:left;list-style-type: none;">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#337CBB;">• • •</a>
+      <ul class="dropdown-menu" role="menu" style="border: hidden;">
+        <li>
+          <a class="reply_btn" id="rep{{comment.id}}">Reply</a>
+        </li>
+        {% if comment.author.id == user.id %}
+        <li>
+          <a href="">Edit</a>
+        </li>
+        <li>
+          <a href="">Delete</a>
+        </li>
+        {% endif %}
+      </ul>
+    </il>
+    </div>
+  </div>
+</div>
+</div>
+{%include "blog/comments.html" %}
+{% endfor %}

@@ -1,0 +1,59 @@
+{% extends 'blog/base.html' %}
+
+  {% block content %}
+  <div class="col-md-8">
+      {% for post in posts %}
+      <div class="panel_post top_grn_border">
+        <div class="date" style="float:right">
+          <a style="display:inline-block">{{ post.published_date }}</a>
+        </div>
+        <div class="settings" style="float:left">
+
+          {% if post.author.id == user.id %}
+          <il class="dropdown" style="float:left;list-style-type: none;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#337CBB;"> • • •</a>
+            <ul class="dropdown-menu" role="menu" style="border: hidden;">
+              <li>
+                <a href="">Edit</a>
+              </li>
+              <li>
+                <a href="">Delete</a>
+              </li>
+            </ul>
+          </il>
+          {% endif %}
+        </div>
+      </div>
+      <div class="post" id='{{ post.pk }}'>
+        <br>
+        <table style="vertical-align:top;margin-top:-20px;" >
+          <tr>
+            <td style="vertical-align:top">
+              <a href="/{{ post.author.pk}}"><div class='ava' style="background-image: url(/media/{{ post.author.avatar }}" title="{{post.author}}'s avatar"></div></a>
+            </td>
+            <td style="vertical-align:top;padding-left:15px;" >
+              <h2><a href="/{{ post.author.pk}}">@{{post.author}}</a></h2>
+            </td>
+          </tr>
+        </table>
+          <a href="{% url 'post_detail' pk=post.pk%}"><h1 style="text-align:left"><span>{{ post.title }} </span></h1></a>
+
+        {% if post.image %}
+           <div class='post_image' style="background-image: url(media/{{post.image}}" title="{{post.author}}'s photo"></div>
+        {% endif %}
+          <p>{{ post.text|linebreaksbr }}</p>
+          <a href="">comments :{{ post.comments.count}}</a>
+      </div>
+          <br>
+      {% endfor %}
+      {% if posts.count == 0 %}
+      <div style="color:gray;margin-left:25px;">
+      <h1>Ohhh...</h1>
+      No posts in our website :(
+      {% else %}
+      We have '{{posts.count}}' posts :)
+    </div>
+     {% endif %}
+
+   </div>
+  {% endblock content %}

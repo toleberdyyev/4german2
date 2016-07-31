@@ -1,0 +1,72 @@
+{% extends 'blog/base.html' %}
+
+    {% block content %}
+    <div class="col-md-4" style="margin-bottom:0;">
+      <div class="post" style="inline-block">
+        <table>
+          <tr>
+            <td>
+              {% if us.avatar == None %}
+              <div class='ava' style="background-image: url(../media/default/avatar.png" title="{{post.author}}'s avatar">
+              </div>
+              {% else %}
+              <div class='ava' style="background-image: url(../media/{{ us.avatar }}" title="{{post.author}}'s avatar"></div>
+              {% endif %}
+            </td>
+            <td style="padding-left:15px;">
+              <table>
+                <tr>
+                  <a href="#"><b>@{{us.username}}</b></a>
+                </tr>
+                <tr>
+                  {% if us.is_superuser%}
+                  <p>Admin</p>
+                  {% else %}
+                  <p>{{ us.first_name }}
+                    {{us.last_name}}
+                  </p>
+                  {%endif%}
+
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+      <br >
+        {% if us.id == user.id %}
+      <div class="post" style="display:none" id="newpost01">
+      <form method="POST" class="post-form" enctype="multipart/form-data" action=".">
+          {% csrf_token %}
+          {{ form.title }}
+          {{ form.text }}
+          <label class="btn btn-default btn-file grn_btn">
+            Upload image :){{ form.image }}
+          </label>
+          <button type="submit" class="save btn btn-default grn_btn">post</button>
+          <br>
+      </form>
+    </div>
+    <div style="background-color:#4285F4;margin-bottom:10px;color:white;text-align:center;height:40px;font-size:25px;cursor:pointer;" id="newpost02">
+      new post
+    </div>
+    {%endif%}
+    </div>
+
+      <div class="col-md-8">
+        {% for post in posts %}
+            <div class="post">
+                <div class="date">
+                    <a >@{{ post.author }}</a>
+                    {{ post.published_date }}
+                </div>
+                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                <p>{{ post.text|linebreaksbr }}</p>
+                <a href="{% url 'blog.views.post_detail' pk=post.pk %}">Comments: {{ post.comments.count }}</a>
+            </div>
+            <br>
+        {% endfor %}
+      </div>
+
+    {% endblock %}

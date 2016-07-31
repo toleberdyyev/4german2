@@ -1,0 +1,58 @@
+{%if comment.get_children_count > 0%}
+
+        {%for ch in comment.get_children %}
+        <div class="replies">
+
+        <div class="comments_row">
+          <div class="comment_teach" style="">
+            <table style="vertical-align:top;" >
+              <tr>
+                <td style="vertical-align:top">
+                  <a href="/{{ ch.author.pk}}"><div class='ava' style="width:50px !important;height:50px !important;background-image: url(/media/{{ ch.author.avatar }}" title="{{ch.author}}'s avatar" ></div></a>
+                </td>
+                <td style="vertical-align:top;padding-left:15px;" >
+                  <table>
+                    <tr>
+                      <p><a href="/{{ ch.author.pk}}" style="color:gray;">@{{ch.author}}</a></p>
+
+                    </tr>
+                    <tr>
+                      <a href="/{{ comment.author.pk}}" >{{comment.author}}</a>, {{ ch.text}}
+                    </p>
+                      <p>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+        <div class="panel_post" style="background-color:white;">
+          <div class="date" style="float:right">
+            <a style="display:inline-block">{{ ch.created_date| timesince}} ago</a>
+          </div>
+          <div class="settings" style="float:left">
+            <il class="dropdown" style="float:left;list-style-type: none;">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#337CBB;">• • •</a>
+              <ul class="dropdown-menu" role="menu" style="border: hidden;">
+                <li>
+                  <a class="reply_btn" id="rep{{ch.id}}">Reply</a>
+                </li>
+                {% if ch.author.id == user.id %}
+                <li>
+                  <a href="">Edit</a>
+                </li>
+                <li>
+                  <a href="">Delete</a>
+                </li>
+              </ul>
+            </il>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+             {%with comment=ch template_name="blog/comments.html" %}
+                  {%include template_name %}
+             {%endwith%}
+        {%endfor%}
+{%endif%}

@@ -1,0 +1,22 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="col-md-4">
+
+  <div class="post">
+    <h1>Your Wecome to<br><b style="color:#4285F4">'TheCodeBlogs'</b><br> create your accout to have fun :)</h1>
+    {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    <form method="POST" class="post-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" name="button" class="btn btn-default grn_btn">Sign Up :)</button>
+    </form>
+  </div>
+</div>
+<div class="col-md-8">
+</div>
+
+{% endblock %}

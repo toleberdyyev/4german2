@@ -1,0 +1,119 @@
+{% extends 'blog/base.html' %}
+
+    {% block content %}
+      <div class="col-md-8">
+        <div class="panel_post top_grn_border">
+          <div class="date" style="float:right">
+            <a style="display:inline-block">{{ post.published_date }}</a>
+          </div>
+          <div class="settings" style="float:left">
+
+            {% if post.author.id == user.id %}
+            <il class="dropdown" style="float:left;list-style-type: none;">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#337CBB;">• • •</a>
+              <ul class="dropdown-menu" role="menu" style="border: hidden;">
+                <li>
+                  <a href="">Edit</a>
+                </li>
+                <li>
+                  <a href="">Delete</a>
+                </li>
+              </ul>
+            </il>
+            {% endif %}
+          </div>
+        </div>
+        <div class="post" id='{{ post.pk }}'>
+          <br>
+          <table style="vertical-align:top;margin-top:-20px;" >
+            <tr>
+              <td style="vertical-align:top">
+                <a href="/{{ post.author.pk}}"><div class='ava' style="background-image: url(/media/{{ post.author.avatar }}" title="{{post.author}}'s avatar"></div></a>
+              </td>
+              <td style="vertical-align:top;padding-left:15px;" >
+                <h2><a href="/{{ post.author.pk}}">@{{post.author}}</a></h2>
+              </td>
+            </tr>
+          </table>
+            <a href="{% url 'post_detail' pk=post.pk%}"><h1 style="text-align:left"><span>{{ post.title }} </span></h1></a>
+
+          {% if post.image %}
+             <div class='post_image' style="background-image: url(../../media/{{post.image}}" title="{{post.author}}'s photo"></div>
+          {% endif %}
+          <br>
+          <br>
+            <p>{{ post.text|linebreaksbr }}</p>
+        </div>
+        <div id="comments_wall">
+                {% for comment in comments %}
+                <div class="comments_row">
+                  <div class="comment_teach" style="">
+                    <table style="vertical-align:top;" >
+                      <tr>
+                        <td style="vertical-align:top">
+                          <a href="/{{ post.author.pk}}"><div class='ava' style="width:50px !important;height:50px !important;background-image: url(/media/{{ post.author.avatar }}" title="{{post.author}}'s avatar" ></div></a>
+                        </td>
+                        <td style="vertical-align:top;padding-left:15px;" >
+                          <table>
+                            <tr>
+                              <p><a href="/{{ post.author.pk}}" style="color:gray;"  class="rep{{comment.id}}"id='{{comment.author}}'>{{comment.author}}</a></p>
+
+                            </tr>
+                            <tr>
+                              <p>
+                               {{ comment.text}}
+                              </p>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                <div class="panel_post" style="background-color:white;">
+                  <div class="date" style="float:right">
+                    <a style="display:inline-block">{{ comment.created_date| timesince}} ago</a>
+                  </div>
+                  <div class="settings" style="float:left">
+                    <il class="dropdown" style="float:left;list-style-type: none;">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#337CBB;">• • •</a>
+                      <ul class="dropdown-menu" role="menu" style="border: hidden;">
+                        <li>
+                          <a class="reply_btn" id="rep{{comment.id}}">Reply</a>
+                        </li>
+                        {% if comment.author.id == user.id %}
+                        <li>
+                          <a href="">Edit</a>
+                        </li>
+                        <li>
+                          <a href="">Delete</a>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </il>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {%include "blog/comments.html" %}
+              {% endfor %}
+            </div>
+            <br>
+        {% if user.is_authenticated %}
+        <div class="post">
+              <form class="podt-form" method="post" id="comment">
+                {% csrf_token %}
+              <div class="">
+                 <b id='reply_for' style="display:none"></b> <a style="color:gray;display:none" id='reply_for_cancel'>cancel</a>
+              </div>
+                {{ form.text}}<br>
+                {{ form.captcha}}<br>
+                <div class="g-recaptcha" data-sitekey="6LeNHCUTAAAAAOYahdU9Eynxj8uOaegIVOWLEBlr"></div>
+                <button type="submit" class="save btn btn-default grn_btn" style="float:left">comment</button>
+              </form>
+              <br>
+              <br>
+            </div>
+            <br>
+              {% endif %}
+</div>
+
+    {% endblock %}
